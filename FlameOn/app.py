@@ -13,7 +13,7 @@ import numpy as np
 #################################################
 
 # Create engine using the `hawaii.sqlite` database file
-engine = create_engine("sqlite:///../Resources/hawaii.sqlite")
+engine = create_engine("sqlite:///Resources/hawaii.sqlite")
 
 # Declare a Base using `automap_base()`
 Base = automap_base()
@@ -37,14 +37,14 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return (
-        f"Welcome to THE BEST Hawaii Climate API Around.<br/>"
-        f"Available Routes:<br/>"
-        f"/api/v1.0/precipitation   Returns last 12 months of precipitation data jsonified<br/>"
-        f"/api/v1.0/stations        Returns list of stations included in dataset jsonified<br/>"
-        f"/api/v1.0/tobs            Returns min/avg/max temp data from the last 12 months jsonified<br/>"
-        f"For min/avg/max temperature data of specific time periods, use the following links. <strong>format for dates: yyyy-mm-dd</strong><br/>"
-        f"/api/v1.0/<start><br/>"
-        f"/api/v1.0/<start>/<end>"
+        "Welcome to THE BEST Hawaii Climate API Around.<br/>"
+        "Available Routes:<br/>"
+        "<strong>/api/v1.0/precipitation</strong> ==  Returns last 12 months of precipitation data<br/>"
+        "<strong>/api/v1.0/stations</strong>      ==  Returns list of stations included in dataset<br/>"
+        "<strong>/api/v1.0/tobs</strong>          ==  Returns all temperature data from most active station<br/>"
+        "For min/avg/max temperature data of specific time periods, use the following links. <strong>format for dates: yyyy-mm-dd</strong><br/>"
+        "<strong>/api/v1.0/start_date</strong><br/>"
+        "<strong>/api/v1.0/start_date/end_date</strong>"
     )
 
 @app.route("/api/v1.0/precipitation")
@@ -117,8 +117,8 @@ def tobs():
     return jsonify(tobs_list)
 
 @app.route("/api/v1.0/<start>")
-@app.route("api/v1.0/<start>/<end>")
-def startsearch(start, end):
+@app.route("/api/v1.0/<start>/<end>")
+def startsearch(start=None, end=None):
     """Returns min/avg/max temperature from specified start time until the most recent time, or until provided end time"""
     # Create a session
     session = Session(engine)
